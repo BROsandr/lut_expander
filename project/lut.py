@@ -18,13 +18,13 @@ def get_number_of_args(func: typing.Callable)->int:
 
 @functools.total_ordering
 class Lut_row:
-  def __init__(self, row_number: int, row_func: typing.Callable, row_format: typing.Type[Lut_row_format]):
+  def __init__(self, row_number: int, row_func: typing.Callable, row_format: Lut_row_format):
     number_of_inputs: int = get_number_of_args(row_func)
     if number_of_inputs <= 0: raise lut_number_of_inputs_exc(number_of_inputs)
     if not(0 <= row_number <= (2**number_of_inputs - 1)): raise myexception.MyValueError(f"Lut's row number must not inside a range [0; number_of_inputs-1]. row_number={row_number}.")
     self.__row_number = row_number
     self.__row_func = row_func
-    self.__row_format = row_format()
+    self.__row_format = row_format
 
   def __int__(self):
     return self.__row_number
@@ -42,7 +42,7 @@ class Lut_row:
     return self.__row_func(*num2args(self.__row_number))
 
 class Lut:
-  def __init__(self, lut_row_func: typing.Callable, lut_row_format: typing.Type[Lut_row_format]):
+  def __init__(self, lut_row_func: typing.Callable, lut_row_format: Lut_row_format):
     self.__lut_row_func = lut_row_func
     number_of_inputs = get_number_of_args(lut_row_func)
     if number_of_inputs <= 0: raise lut_number_of_inputs_exc(number_of_inputs)
