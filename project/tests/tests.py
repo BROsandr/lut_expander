@@ -47,6 +47,7 @@ class TestLut(unittest.TestCase):
     import random
     _ = list(lut_obj)
     random.shuffle(_)
+    assert(lut_obj != _)
     self.assertEqual(lut_obj, sorted(_))
 
 if __name__ == '__main__':
