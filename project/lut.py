@@ -54,7 +54,7 @@ class Lut:
     return self
 
   def __next__(self)->Lut_row:
-    if self.__iter_num == get_number_of_args(self.__lut_row_func): raise StopIteration
+    if self.__iter_num == 2**get_number_of_args(self.__lut_row_func): raise StopIteration
     next_row = self._get_next_row(self.__current_row)
     self.__iter_num += 1
     self.__current_row = next_row
