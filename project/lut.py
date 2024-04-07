@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 import myexception
 import typing
+import functools
 
 lut_number_of_inputs_exc = lambda number_of_inputs: myexception.MyValueError(f"Lut's number of inputs must be a positive number. number_of_inputs={number_of_inputs}.")
 
@@ -13,6 +16,7 @@ def get_number_of_args(func: typing.Callable)->int:
   from inspect import signature
   return len(signature(func).parameters)
 
+@functools.total_ordering
 class Lut_row:
   def __init__(self, row_number: int, row_func: typing.Callable, row_format: typing.Type[Lut_row_format]):
     number_of_inputs: int = get_number_of_args(row_func)
@@ -24,6 +28,12 @@ class Lut_row:
 
   def __repr__(self):
     return self.__row_format(row_number=self.__row_number, number_of_inputs=get_number_of_args(self.__row_func), row_func_output=str(self.__row_func(*num2args(self.__row_number))))
+
+  def __eq__(self, other: Lut_row):
+    return self.__row_number == other.__row_number
+
+  def __lt__(self, other: Lut_row):
+    return self.__row_number < other.__row_number
 
 class Lut:
   def __init__(self, lut_row_func: typing.Callable, lut_row_format: typing.Type[Lut_row_format]):
