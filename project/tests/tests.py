@@ -25,6 +25,7 @@ class TestLut(unittest.TestCase):
     self.assertEqual(int(lut_obj[1]), 1)
     self.assertEqual(str(lut_obj[0]), "1'b0: 0")
     self.assertEqual(str(lut_obj[1]), "1'b1: 1")
+    self.assertEqual(lut_obj, sorted([lut_obj[1], lut_obj[0]]))
 
 if __name__ == '__main__':
   unittest.main()
