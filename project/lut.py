@@ -24,7 +24,7 @@ class Lut_row:
     if not(0 <= row_number <= (2**number_of_inputs - 1)): raise myexception.MyValueError(f"Lut's row number must not inside a range [0; number_of_inputs-1]. row_number={row_number}.")
     self.__row_number = row_number
     self.__row_func = row_func
-    self.__row_format = row_format
+    self.__row_format = row_format()
 
   def __repr__(self):
     return self.__row_format(row_number=self.__row_number, number_of_inputs=get_number_of_args(self.__row_func), row_func_output=str(self.eval_func()))
