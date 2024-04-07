@@ -3,28 +3,36 @@ import typing
 
 lut_number_of_inputs_exc = lambda number_of_inputs: myexception.MyValueError(f"Lut's number of inputs must be a positive number. number_of_inputs={number_of_inputs}.")
 
+num2args = lambda number: (bool(int(el)) for el in bin(number)[2:])
+
+class Lut_row_format:
+  def __call__(self, row_number: int, number_of_inputs: int, row_func_output: str)->str:
+    return str(row_number) + "'b" + format(row_number, f"0{number_of_inputs}b") + row_func_output
+
 def get_number_of_args(func: typing.Callable)->int:
   from inspect import signature
   return len(signature(func).parameters)
 
 class Lut_row:
-  def __init__(self, row_number: int, row_func: typing.Callable):
+  def __init__(self, row_number: int, row_func: typing.Callable, row_format: typing.Type[Lut_row_format]):
     number_of_inputs: int = get_number_of_args(row_func)
     if number_of_inputs <= 0: raise lut_number_of_inputs_exc(number_of_inputs)
     if not(0 <= row_number <= (2**number_of_inputs - 1)): raise myexception.MyValueError(f"Lut's row number must not inside a range [0; number_of_inputs-1]. row_number={row_number}.")
     self.__row_number = row_number
     self.__row_func = row_func
+    self.__row_format = row_format
 
   def __repr__(self):
-    return format(self.__row_number, f"0{self._number_of_inputs}b")
+    return self.__row_format(row_number=self.__row_number, number_of_inputs=get_number_of_args(self.__row_func), row_func_output=str(self.__row_func(*num2args(self.__row_number))))
 
 class Lut:
-  def __init__(self, lut_row_func: typing.Callable):
+  def __init__(self, lut_row_func: typing.Callable, lut_row_format: typing.Type[Lut_row_format]):
     self.__lut_row_func = lut_row_func
     number_of_inputs = get_number_of_args(lut_row_func)
     if number_of_inputs <= 0: raise lut_number_of_inputs_exc(number_of_inputs)
     self.__current_row = None
     self.__iter_num: int = 0
+    self.__lut_row_format = lut_row_format
 
   def __iter__(self):
     return self
@@ -34,18 +42,7 @@ class Lut:
     next_row = self._get_next_row(self.__current_row)
     self.__iter_num += 1
     self.__current_row = next_row
-    return Lut_row(next_row, self.__lut_row_func)
+    return Lut_row(row_number=next_row, row_func=self.__lut_row_func, row_format=self.__lut_row_format)
 
   def _get_next_row(self, current_row)->int:
     return 0 if current_row is None else current_row + 1
-
-if __name__ == "__main__":
-  Lut(3)
-  try:
-    Lut(-1)
-  except myexception.MyException as err:
-    ...
-  try:
-    Lut(-1)
-  except ValueError as err:
-    print(err)
