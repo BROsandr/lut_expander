@@ -10,7 +10,7 @@ num2args = lambda number: (bool(int(el)) for el in bin(number)[2:])
 
 class Lut_row_format:
   def __call__(self, row_number: int, number_of_inputs: int, row_func_output: str)->str:
-    return str(row_number) + "'b" + format(row_number, f"0{number_of_inputs}b") + row_func_output
+    return str(row_number) + "'b" + format(row_number, f"0{number_of_inputs}b") + ': ' + row_func_output
 
 def get_number_of_args(func: typing.Callable)->int:
   from inspect import signature
