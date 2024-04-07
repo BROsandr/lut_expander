@@ -16,7 +16,7 @@ class TestLut(unittest.TestCase):
     def lut_1_args(a: bool): return lut_args2num(a)
     return lut_1_args
 
-  def test_lut_2(self):
+  def test_lut_1(self):
     lut_obj = list(lut.Lut(self.lut_args2num_wrapper(1), lut.Lut_row_format()))
     self.assertEqual(len(lut_obj), 2, "The lut must contain only two rows 1'b0 and 1'b1.")
     self.assertEqual(lut_obj[0].eval_func(), 0)
