@@ -21,7 +21,7 @@ class Lut_row:
   def __init__(self, row_number: int, row_func: typing.Callable, row_format: Lut_row_format):
     number_of_inputs: int = get_number_of_args(row_func)
     if number_of_inputs <= 0: raise lut_number_of_inputs_exc(number_of_inputs)
-    if not(0 <= row_number <= (2**number_of_inputs - 1)): raise myexception.MyValueError(f"Lut's row number must not inside a range [0; number_of_inputs-1]. row_number={row_number}.")
+    if not(0 <= row_number <= (2**number_of_inputs - 1)): raise myexception.MyValueError(f"Lut's row number must not inside a range [0; number_of_inputs-1]. row_number={row_number}, number_of_inputs={number_of_inputs}.")
     self.__row_number = row_number
     self.__row_func = row_func
     self.__row_format = row_format
