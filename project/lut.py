@@ -1,6 +1,11 @@
 import myexception
+import typing
 
 lut_number_of_inputs_exc = lambda number_of_inputs: myexception.MyValueError(f"Lut's number of inputs must be a positive number. number_of_inputs={number_of_inputs}.")
+
+def get_number_of_args(func: typing.Callable)->int:
+  from inspect import signature
+  return len(signature(func).parameters)
 
 class Lut_row:
   def __init__(self, row_number: int, number_of_inputs: int):
