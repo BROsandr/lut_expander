@@ -6,7 +6,7 @@ import functools
 
 lut_number_of_inputs_exc = lambda number_of_inputs: myexception.MyValueError(f"Lut's number of inputs must be a positive number. number_of_inputs={number_of_inputs}.")
 
-num2args = lambda number: (bool(int(el)) for el in bin(number)[2:])
+num2args = lambda number, args: (bool(int(el)) for el in format(number, f"0{args}b"))
 
 class Lut_row_format:
   def __call__(self, row_number: int, number_of_inputs: int, row_func_output: str)->str:
@@ -39,7 +39,7 @@ class Lut_row:
     return int(self) < int(other)
 
   def eval_func(self)->typing.Any:
-    return self.__row_func(*num2args(self.__row_number))
+    return self.__row_func(*num2args(number=self.__row_number, args=get_number_of_args(self.__row_func)))
 
 class Lut:
   def __init__(self, lut_row_func: typing.Callable, lut_row_format: Lut_row_format):
