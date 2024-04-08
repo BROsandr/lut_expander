@@ -28,6 +28,9 @@ class Lut_row:
     return self.__row_number
 
   def __repr__(self):
+    return 'Lut_row(row_number=%r, row_func=%r, row_format=%r)' % (self.__row_number, self.__row_func, self.__row_format)
+
+  def __str__(self):
     return self.__row_format(row_number=self.__row_number, number_of_inputs=get_number_of_args(self.__row_func), row_func_output=self.eval_func())
 
   def __eq__(self, other: Lut_row):
