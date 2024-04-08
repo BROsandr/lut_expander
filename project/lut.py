@@ -19,6 +19,11 @@ class Lut_row_bin_format(Lut_row_format):
   def __call__(self, row_number: int, number_of_inputs: int, row_func_output: str)->str:
     return to_verilog_literal(number=row_number, width=number_of_inputs, radix=Radix.BIN) + ': ' + row_func_output
 
+class Lut_row_rand_radix_format(Lut_row_format):
+  def __call__(self, row_number: int, number_of_inputs: int, row_func_output: str)->str:
+    import random
+    return to_verilog_literal(number=row_number, width=number_of_inputs, radix=random.choice(list(Radix))) + ': ' + row_func_output
+
 def get_number_of_args(func: typing.Callable)->int:
   from inspect import signature
   return len(signature(func).parameters)
