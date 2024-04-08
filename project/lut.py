@@ -1,26 +1,14 @@
 from __future__ import annotations
 
-from . import myexception
+from .      import myexception
+from .utils import *
 import typing
 import functools
-from enum import Enum
 import abc
 
 lut_number_of_inputs_exc = lambda number_of_inputs: myexception.MyValueError(f"Lut's number of inputs must be a positive number. number_of_inputs={number_of_inputs}.")
 
 num2args = lambda number, args: (bool(int(el)) for el in format(number, f"0{args}b"))
-
-Radix = Enum('Radix', ['DEC', 'BIN', 'HEX', 'OCT'])
-
-def to_verilog_literal(number: int, width: int, radix: Radix)->str:
-  if width  <= 0: raise myexception.MyValueError("Number's width should a positive number.")
-  if number <  0: raise myexception.MyValueError("Negative literals are not supported.")
-
-  result = str(width)
-  if radix == Radix.BIN: return result + "'b" + format(number, f"0{width}b")
-  if radix == Radix.DEC: return result + "'d" + format(number, f"d")
-  if radix == Radix.HEX: return result + "'h" + format(number, f"x")
-  if radix == Radix.OCT: return result + "'o" + format(number, f"o")
 
 class Lut_row_format(metaclass=abc.ABCMeta):
   @abc.abstractmethod
