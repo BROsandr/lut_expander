@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import myexception
+from . import myexception
 import typing
 import functools
 
