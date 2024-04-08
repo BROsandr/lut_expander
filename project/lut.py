@@ -12,17 +12,17 @@ num2args = lambda number, args: (bool(int(el)) for el in format(number, f"0{args
 
 class Lut_row_format(metaclass=abc.ABCMeta):
   @abc.abstractmethod
-  def __call__(self, row_number: int, number_of_inputs: int, row_func_output: str)->str:
+  def __call__(self, row_number: int, number_of_inputs: int, row_func_output)->str:
     ...
 
 class Lut_row_bin_format(Lut_row_format):
-  def __call__(self, row_number: int, number_of_inputs: int, row_func_output: str)->str:
-    return to_verilog_literal(number=row_number, width=number_of_inputs, radix=Radix.BIN) + ': ' + row_func_output
+  def __call__(self, row_number: int, number_of_inputs: int, row_func_output)->str:
+    return to_verilog_literal(number=row_number, width=number_of_inputs, radix=Radix.BIN) + ': ' + str(row_func_output)
 
 class Lut_row_rand_radix_format(Lut_row_format):
-  def __call__(self, row_number: int, number_of_inputs: int, row_func_output: str)->str:
+  def __call__(self, row_number: int, number_of_inputs: int, row_func_output)->str:
     import random
-    return to_verilog_literal(number=row_number, width=number_of_inputs, radix=random.choice(list(Radix))) + ': ' + row_func_output
+    return to_verilog_literal(number=row_number, width=number_of_inputs, radix=random.choice(list(Radix))) + ': ' + str(row_func_output)
 
 def get_number_of_args(func: typing.Callable)->int:
   from inspect import signature
@@ -42,7 +42,7 @@ class Lut_row:
     return self.__row_number
 
   def __repr__(self):
-    return self.__row_format(row_number=self.__row_number, number_of_inputs=get_number_of_args(self.__row_func), row_func_output=str(self.eval_func()))
+    return self.__row_format(row_number=self.__row_number, number_of_inputs=get_number_of_args(self.__row_func), row_func_output=self.eval_func())
 
   def __eq__(self, other: Lut_row):
     return int(self) == int(other)
