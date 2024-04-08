@@ -18,7 +18,7 @@ class TestLut(unittest.TestCase):
     raise myexception.MyValueError(f"Unsupported num_of_args=={num_of_args}.")
 
   def test_lut_1(self):
-    lut_obj = list(lut.Lut(self.lut_args2num_wrapper(1), lut.Lut_row_format()))
+    lut_obj = list(lut.Lut(self.lut_args2num_wrapper(1), lut.Lut_row_bin_format()))
     self.assertEqual(len(lut_obj), 2, "The lut must contain only two rows 1'b0 and 1'b1.")
     self.assertEqual(lut_obj[0].eval_func(), 0)
     self.assertEqual(lut_obj[1].eval_func(), 1)
@@ -29,7 +29,7 @@ class TestLut(unittest.TestCase):
     self.assertEqual(lut_obj, sorted([lut_obj[1], lut_obj[0]]))
 
   def test_lut_2(self):
-    lut_obj = list(lut.Lut(self.lut_args2num_wrapper(2), lut.Lut_row_format()))
+    lut_obj = list(lut.Lut(self.lut_args2num_wrapper(2), lut.Lut_row_bin_format()))
     self.assertEqual(len(lut_obj), 4, "The lut must contain only four rows: 2'b00, 2'b01, 2'b10, 2'b11.")
     self.assertEqual(lut_obj[0].eval_func(), 0)
     self.assertEqual(lut_obj[1].eval_func(), 1)
