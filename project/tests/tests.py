@@ -1,6 +1,6 @@
 import unittest
-import lut
-import myexception
+from .. import lut
+from .. import myexception
 
 bits2num = lambda bits: int(''.join(str(int(bit)) for bit in bits), base=2)
 
