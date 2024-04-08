@@ -1,5 +1,6 @@
 import abc
 from .utils import *
+import typing
 
 class Lut_row_format(metaclass=abc.ABCMeta):
   @abc.abstractmethod
@@ -15,17 +16,20 @@ class Lut_row_verilog_format(Lut_row_format):
 
 class Lut_row_format_factory(metaclass=abc.ABCMeta):
   @abc.abstractmethod
-  def get_format(self, number: int)->Lut_row_format:
+  def get_format(self, lut_row_number: int)->Lut_row_format:
     ...
 
 class Lut_row_format_factory_same(Lut_row_format_factory):
   def __init__(self, lut_row_format: Lut_row_format):
     self.format = lut_row_format
 
-  def get_format(self, number: int)->Lut_row_format:
+  def get_format(self, lut_row_number: int)->Lut_row_format:
     return self.format
 
-class Lut_row_format_factory_rand(Lut_row_format_factory):
-  def get_format(self, number: int)->Lut_row_format:
+class Lut_row_format_factory_rand_verilog(Lut_row_format_factory):
+  def __init__(self, lut_row_format: typing.Type[Lut_row_verilog_format]):
+    self._format = lut_row_format
+
+  def get_format(self, lut_row_number: int)->Lut_row_format:
     import random
-    return Lut_row_verilog_format(random.choice(list(Radix)))
+    return self._format(random.choice(list(Radix)))
