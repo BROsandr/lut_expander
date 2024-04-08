@@ -40,7 +40,7 @@ class Lut_row:
     return self.__row_func(*num2args(number=self.__row_number, args=get_number_of_args(self.__row_func)))
 
 class Lut:
-  def __init__(self, lut_row_func: typing.Callable, lut_row_format: Lut_row_format):
+  def __init__(self, lut_row_func: typing.Callable, lut_row_format: Lut_row_format_factory):
     self.__lut_row_func = lut_row_func
     number_of_inputs = get_number_of_args(lut_row_func)
     if number_of_inputs <= 0: raise lut_number_of_inputs_exc(number_of_inputs)
@@ -56,7 +56,7 @@ class Lut:
     next_row = self._get_next_row(self.__current_row)
     self.__iter_num += 1
     self.__current_row = next_row
-    return Lut_row(row_number=next_row, row_func=self.__lut_row_func, row_format=self.__lut_row_format)
+    return Lut_row(row_number=next_row, row_func=self.__lut_row_func, row_format=self.__lut_row_format.get_format(next_row))
 
   def _get_next_row(self, current_row)->int:
     return 0 if current_row is None else current_row + 1
